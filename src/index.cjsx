@@ -36,10 +36,11 @@ module.exports = React.createClass
                   width: "#{imageWidth}px"
                   height: "#{imageWidth*@props.widthHeightRatio}px"
                   display: "inline-block"
-                  overflow: "hidden"
-                  position: "relative"
                   "margin-right": "#{marginRight}px"
                   "margin-bottom": "#{@props.margin}px"
+                  overflow: "hidden"
+                  position: "relative"
+                  "vertical-align": "top"
                 }
               }, child)
             )
