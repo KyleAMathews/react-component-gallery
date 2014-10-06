@@ -7,7 +7,6 @@
     "url": "https://github.com/KyleAMathews/react-image-grid/issues"
   },
   "dependencies": {
-    "element-resize-event": "^1.0.0",
     "react-component-width-mixin": "^1.0.2"
   },
   "devDependencies": {
