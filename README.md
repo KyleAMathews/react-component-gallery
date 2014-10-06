@@ -3,7 +3,7 @@ react-image-grid
 
 React component for creating an evenly spaced grid of images.
 
-You choose a `targetWidth` andmargin for your images and the component does the
+You choose a `targetWidth`, `margin`, and `widthHeightRatio` for your images and the component does the
 math to figure out how to size each image. Re-renders when the component
 width changes.
 
