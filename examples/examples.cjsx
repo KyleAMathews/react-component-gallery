@@ -75,20 +75,6 @@ module.exports = React.createClass
           <img src="https://farm4.staticflickr.com/3767/10850685734_996f244676_z.jpg" />
       </ImageGrid>
 
-      <h3>Logos</h3>
-      <ImageGrid
-        className="logos"
-        margin={@state.margin}
-        widthHeightRatio=1
-        targetWidth={@state.targetWidth}>
-          <img src="http://cdn.ycombinator.com/images/startups/Dropbox-974e8cb3.png" />
-          <img src="http://cdn.ycombinator.com/images/startups/Disqus-ed2cbd86.png" />
-          <img src="http://cdn.ycombinator.com/images/startups/Airbnb-9c9d2e9e.png" />
-          <img src="http://cdn.ycombinator.com/images/startups/Stripe-1e55f58f.png" />
-          <img src="http://cdn.ycombinator.com/images/startups/Hipmunk-33969dcc.png" />
-          <img src="http://cdn.ycombinator.com/images/startups/Codecademy-89676d22.png" />
-      </ImageGrid>
-
     </div>
 
   onWidthChange: (e) ->
