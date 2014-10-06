@@ -36,7 +36,6 @@ module.exports = React.createClass
         """}
       </code></pre>
       <br />
-      <br />
 
       <h2>Demo</h2>
       <h3>targetWidth</h3>
