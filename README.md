@@ -25,5 +25,11 @@ width changes.
           <img src="https://example.com/pic6.jpg" />
       </ImageGrid>
 
+If you'll be rendering this component on the server, you'll also want to
+pass in a `initialComponentWidth` prop so the component has a width to
+calculate against. Otherwise the component will return an empty <div />.
+For example, if your rendering for a mobile screen, do something like
+`initialComponentWidth=375`
+
 ## Demo
 http://kyleamathews.github.io/react-image-grid/

@@ -7,7 +7,7 @@
     "url": "https://github.com/KyleAMathews/react-image-grid/issues"
   },
   "dependencies": {
-    "react-component-width-mixin": "^1.0.2"
+    "react-component-width-mixin": "^1.1.0"
   },
   "devDependencies": {
     "cjsx-loader": "^0.3.0",
