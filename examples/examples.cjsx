@@ -9,11 +9,37 @@ module.exports = React.createClass
 
   render: ->
     <div style={"max-width":'1200px', margin:'0 auto'}>
-      <h1>React-Component-Starter</h1>
-      <a href="https://github.com/KyleAMathews/react-component-starter">Code on Github</a>
+      <h1>react-image-grid</h1>
+      <a href="https://github.com/KyleAMathews/react-image-grid">Code on Github</a>
+      <p>Create a perfect image grid every time whatever the size of the
+      container. Just choose your target width and margin and then the
+      component will do the math to figure out how to evenly lay out
+      your images.</p>
+      <p>Try changing the screen width as well as the targetWidth/margin sliders
+      below to see how the component automatically adjusts</p>
+
+      <h2>Example code</h2>
+      <pre><code>
+      {"""
+        <ImageGrid
+          className="photos"
+          margin=10
+          widthHeightRatio=3/5
+          targetWidth=250
+            <img src="https://example.com/pic1.jpg" />
+            <img src="https://example.com/pic2.jpg" />
+            <img src="https://example.com/pic3.jpg" />
+            <img src="https://example.com/pic4.jpg" />
+            <img src="https://example.com/pic5.jpg" />
+            <img src="https://example.com/pic6.jpg" />
+        </ImageGrid>
+        """}
+      </code></pre>
       <br />
       <br />
-      <h2>Target Width</h2>
+
+      <h2>Demo</h2>
+      <h3>targetWidth</h3>
       <input
         type="range"
         min=50
@@ -24,7 +50,7 @@ module.exports = React.createClass
       <code>{'  '}{@state.targetWidth}px</code>
       <br />
       <br />
-      <h2>Margin</h2>
+      <h3>margin</h3>
       <input
         type="range"
         min=0
