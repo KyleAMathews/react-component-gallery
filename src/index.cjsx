@@ -50,23 +50,34 @@ module.exports = React.createClass
       <div />
 
   calculateImageWidth: ->
-    # Calculate the # of images per row to place.
-    imageCount = React.Children.count(@props.children)
-    imagesPerRow = Math.round(@state.componentWidth/@props.targetWidth)
+    _calcImageWidth = (adjustImagesPerRow = 0) =>
+      # Calculate the # of images per row to place.
+      imageCount = React.Children.count(@props.children)
+      imagesPerRow = Math.round(@state.componentWidth/@props.targetWidth)
+      imagesPerRow = imagesPerRow - adjustImagesPerRow
 
-    # There has to be at least one image per row.
-    imagesPerRow = Math.max(imagesPerRow, 1)
-    if imagesPerRow > imageCount
-      imagesPerRow = imageCount
+      # There has to be at least one image per row.
+      imagesPerRow = Math.max(imagesPerRow, 1)
+      if imagesPerRow > imageCount
+        imagesPerRow = imageCount
 
-    # Calculate the per-image width with space for in-between
-    # images subtracted
-    rawWidth = @state.componentWidth / imagesPerRow
-    marginRightOffset = ((@props.margin * imagesPerRow) - @props.margin) / imagesPerRow
-    imageWidth = rawWidth - marginRightOffset - 0.25
+      # Calculate the per-image width with space for in-between
+      # images subtracted
+      rawWidth = @state.componentWidth / imagesPerRow
+      marginRightOffset = ((@props.margin * imagesPerRow) - @props.margin) / imagesPerRow
+      imageWidth = rawWidth - marginRightOffset - 0.25
 
-    # Don't get too big.
-    maxWidth = if @props.maxWidth? then @props.maxWidth else @props.targetWidth * 1.5
-    imageWidth = Math.min(imageWidth, maxWidth)
+      # Don't get too big.
+      maxWidth = if @props.maxWidth? then @props.maxWidth else @props.targetWidth * 1.5
+      imageWidth = Math.min(imageWidth, maxWidth)
+      return [imageWidth, imagesPerRow, marginRightOffset]
+
+    [imageWidth, imagesPerRow, marginRightOffset] = _calcImageWidth()
+
+    # If the total margin used in a row is greater than one image, drop the images
+    # per row.
+    if imageWidth < marginRightOffset * imagesPerRow
+      adjustment = Math.round((marginRightOffset*imagesPerRow)/imageWidth)
+      [imageWidth, imagesPerRow, marginRightOffset] = _calcImageWidth(adjustment)
 
     return [imageWidth, imagesPerRow]
