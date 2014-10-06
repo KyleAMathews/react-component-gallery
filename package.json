@@ -1,0 +1,44 @@
+{
+  "name": "react-image-grid",
+  "description": "React component for laying out an evenly spaced grid of images",
+  "version": "0.0.0",
+  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/KyleAMathews/react-image-grid/issues"
+  },
+  "dependencies": {
+    "element-resize-event": "^1.0.0",
+    "react-component-width-mixin": "^1.0.0"
+  },
+  "devDependencies": {
+    "cjsx-loader": "^0.3.0",
+    "coffee-loader": "^0.7.2",
+    "coffee-react": "^1.0.2",
+    "coffee-script": "^1.8.0",
+    "css-loader": "^0.9.0",
+    "gulp": "^3.8.8",
+    "react-hot-loader": "^0.4.5",
+    "style-loader": "^0.8.1",
+    "underscore": "^1.7.0",
+    "webpack": "^1.4.4",
+    "webpack-dev-server": "^1.6.5"
+  },
+  "homepage": "https://github.com/KyleAMathews/react-image-grid",
+  "keywords": [
+    "react",
+    "react-component",
+    "grid"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "peerDependencies": {
+    "react": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KyleAMathews/react-image-grid.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
