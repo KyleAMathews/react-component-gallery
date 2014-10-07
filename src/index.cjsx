@@ -1,4 +1,5 @@
 React = require 'react'
+_ = require 'underscore'
 componentWidthMixin = require 'react-component-width-mixin'
 
 module.exports = React.createClass
@@ -6,7 +7,7 @@ module.exports = React.createClass
   mixins: [componentWidthMixin]
 
   propTypes:
-    children: React.PropTypes.any.isRequired
+    images: React.PropTypes.array.isRequired
 
   getInitialState: ->
     width: 0
@@ -21,29 +22,40 @@ module.exports = React.createClass
       [imageWidth, imagesPerRow] = @calculateImageWidth()
       return (
         <div className="image-grid #{@props.className}" style={{overflow: "hidden"}}>
-          {React.Children.map(@props.children, (child, i) =>
-            if imagesPerRow is 1
-              marginRight = 0
-            else if i isnt 0 and (i + 1) % imagesPerRow is 0
-              marginRight = 0
-            else
-              marginRight = @props.margin
+          {
+            # Loop over each image and create the image grid element.
+            @props.images.map (image, i) =>
+              if imagesPerRow is 1
+                marginRight = 0
+              else if i isnt 0 and (i + 1) % imagesPerRow is 0
+                marginRight = 0
+              else
+                marginRight = @props.margin
 
-            return (
-              React.DOM.div({
-                className: "image-wrapper"
-                style: {
-                  width: "#{imageWidth}px"
-                  height: "#{imageWidth*@props.widthHeightRatio}px"
-                  display: "inline-block"
-                  overflow: "hidden"
-                  position: "relative"
-                  "margin-right": "#{marginRight}px"
-                  "margin-bottom": "#{@props.margin}px"
-                }
-              }, child)
-            )
-          )}
+              if _.isString image
+                imageEl = React.DOM.img({src: image})
+                key = image
+              else if _.isObject image
+                imageEl = <a href={image.link}><img src={image.src} /></a>
+                key = image.src
+
+              return (
+                React.DOM.div({
+                  className: "image-wrapper"
+                  key: key
+                  style: {
+                    width: "#{imageWidth}px"
+                    height: "#{imageWidth*@props.widthHeightRatio}px"
+                    display: "inline-block"
+                    "margin-right": "#{marginRight}px"
+                    "margin-bottom": "#{@props.margin}px"
+                    overflow: "hidden"
+                    position: "relative"
+                    "vertical-align": "top"
+                  }
+                }, imageEl)
+              )
+          }
         </div>
       )
     else
@@ -52,7 +64,7 @@ module.exports = React.createClass
   calculateImageWidth: ->
     _calcImageWidth = (adjustImagesPerRow = 0) =>
       # Calculate the # of images per row to place.
-      imageCount = React.Children.count(@props.children)
+      imageCount = @props.images.length
       imagesPerRow = Math.round(@state.componentWidth/@props.targetWidth)
       imagesPerRow = imagesPerRow - adjustImagesPerRow
 
