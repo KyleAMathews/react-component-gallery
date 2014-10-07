@@ -8,7 +8,7 @@ module.exports = React.createClass
     margin: 10
 
   render: ->
-    <div style={"max-width":'1200px', margin:'0 auto'}>
+    <div style={"max-width":'1200px', margin:'0 auto', "padding-bottom": "200px"}>
       <h1>react-image-grid</h1>
       <a href="https://github.com/KyleAMathews/react-image-grid">Code on Github</a>
       <p>Create a perfect image grid every time whatever the size of the
