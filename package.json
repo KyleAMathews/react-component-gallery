@@ -1,10 +1,10 @@
 {
-  "name": "react-image-grid",
-  "description": "React component for laying out an evenly spaced grid of images",
-  "version": "0.2.1",
+  "name": "react-component-gallery",
+  "description": "React component for laying out an evenly spaced gallery of child components",
+  "version": "0.3.1",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "bugs": {
-    "url": "https://github.com/KyleAMathews/react-image-grid/issues"
+    "url": "https://github.com/KyleAMathews/react-component-gallery/issues"
   },
   "dependencies": {
     "react-component-width-mixin": "^1.1.0"
@@ -22,7 +22,7 @@
     "webpack": "^1.4.4",
     "webpack-dev-server": "^1.6.5"
   },
-  "homepage": "https://github.com/KyleAMathews/react-image-grid",
+  "homepage": "https://github.com/KyleAMathews/react-component-gallery",
   "keywords": [
     "react",
     "react-component",
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/KyleAMathews/react-image-grid.git"
+    "url": "https://github.com/KyleAMathews/react-component-gallery.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
