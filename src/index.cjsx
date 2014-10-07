@@ -34,12 +34,15 @@ module.exports = React.createClass
 
               if _.isString image
                 imageEl = React.DOM.img({src: image})
+                key = image
               else if _.isObject image
                 imageEl = <a href={image.link}><img src={image.src} /></a>
+                key = image.src
 
               return (
                 React.DOM.div({
                   className: "image-wrapper"
+                  key: key
                   style: {
                     width: "#{imageWidth}px"
                     height: "#{imageWidth*@props.widthHeightRatio}px"
