@@ -8,7 +8,7 @@ module.exports = React.createClass
     margin: 10
 
   render: ->
-    <div style={"max-width":'1200px', margin:'0 auto', "padding-bottom": "200px"}>
+    <div style={"max-width":'1200px', margin:'0 auto'}>
       <h1>react-image-grid</h1>
       <a href="https://github.com/KyleAMathews/react-image-grid">Code on Github</a>
       <p>Create a perfect image grid every time whatever the size of the
@@ -26,17 +26,13 @@ module.exports = React.createClass
           margin=10
           widthHeightRatio=3/5
           targetWidth=250
-          images={[
-            "https://example.com/pic1.jpg",
-            {
-              src: "https://example.com/pic2.jpg",
-              link: "https://example.com/pic2.jpg"
-            },
-            "https://example.com/pic3.jpg",
-            "https://example.com/pic4.jpg",
-            "https://example.com/pic5.jpg",
-            "https://example.com/pic6.jpg"
-          ]} />
+            <img src="https://example.com/pic1.jpg" />
+            <img src="https://example.com/pic2.jpg" />
+            <img src="https://example.com/pic3.jpg" />
+            <img src="https://example.com/pic4.jpg" />
+            <img src="https://example.com/pic5.jpg" />
+            <img src="https://example.com/pic6.jpg" />
+        </ImageGrid>
         """}
       </code></pre>
       <br />
@@ -69,18 +65,14 @@ module.exports = React.createClass
         className="photos"
         margin={@state.margin}
         widthHeightRatio=3/5
-        targetWidth={@state.targetWidth}
-        images={[
-          "https://farm1.staticflickr.com/55/148800272_86cffac801_z.jpg"
-          {
-            src: "https://farm3.staticflickr.com/2937/14197491985_58036d5b0e_z.jpg"
-            link: "https://farm3.staticflickr.com/2937/14197491985_58036d5b0e_z.jpg"
-          }
-          "https://farm3.staticflickr.com/2937/14203620719_a0a4d323ef_z.jpg"
-          "https://farm6.staticflickr.com/5516/11906727035_b5ccf50dbd_z.jpg"
-          "https://farm6.staticflickr.com/5495/11817560513_41b2f225a5_z.jpg"
-          "https://farm4.staticflickr.com/3767/10850685734_996f244676_z.jpg"
-        ]} />
+        targetWidth={@state.targetWidth}>
+          <img src="https://farm1.staticflickr.com/55/148800272_86cffac801_z.jpg" />
+          <img src="https://farm3.staticflickr.com/2937/14197491985_58036d5b0e_z.jpg" />
+          <img src="https://farm3.staticflickr.com/2937/14203620719_a0a4d323ef_z.jpg" />
+          <img src="https://farm6.staticflickr.com/5516/11906727035_b5ccf50dbd_z.jpg" />
+          <img src="https://farm6.staticflickr.com/5495/11817560513_41b2f225a5_z.jpg" />
+          <img src="https://farm4.staticflickr.com/3767/10850685734_996f244676_z.jpg" />
+      </ImageGrid>
 
     </div>
 
