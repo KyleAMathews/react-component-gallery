@@ -1,41 +1,31 @@
-react-image-grid
+react-component-gallery
 ================
 
-React component for creating an evenly spaced grid of images.
+React component for creating an evenly spaced gallery of child components.
 
-You choose a `targetWidth`, `margin`, and `widthHeightRatio` for your images and the component does the
-math to figure out how to size each image. Re-renders when the component
-width changes.
+These components can be anything from text, images, a card UI, etc.
 
-You can pass to the component either a simple array of image urls. Or,
-if you'd like an image to link to something, pass an object with `src`
-and `link` fields. See the example usage below.
+You choose a `targetWidth`, `margin`, and `widthHeightRatio` for your components and then this component does the
+math to figure out how to size each component. Listens for when its width
+changes and re-renders.
 
 ## Install
-`npm install react-image-grid`
+`npm install react-component-gallery`
 
 ## Usage
 
-      <ImageGrid
+      <ComponentGallery
         className="photos"
         margin=10
         widthHeightRatio=3/5
         targetWidth=250
-        images={[
-          "https://example.com/pic1.jpg",
-          {
-            src: "https://example.com/pic2.jpg",
-            link: "https://example.com/pic2.jpg"
-          },
-          "https://example.com/pic3.jpg",
-          "https://example.com/pic4.jpg",
-          "https://example.com/pic5.jpg",
-          "https://example.com/pic6.jpg"
-          {
-            src: "https://example.com/pic7.jpg",
-            link: "https://google.com"
-          },
-        ]} />
+          <img src="https://example.com/pic1.jpg" />
+          <img src="https://example.com/pic2.jpg" />
+          <img src="https://example.com/pic3.jpg" />
+          <img src="https://example.com/pic4.jpg" />
+          <img src="https://example.com/pic5.jpg" />
+          <img src="https://example.com/pic6.jpg" />
+      </ComponentGallery>
 
 If you'll be rendering this component on the server, you'll also want to
 pass in a `initialComponentWidth` prop so the component has a width to
@@ -44,4 +34,4 @@ For example, if your rendering for a mobile screen, do something like
 `initialComponentWidth=375`
 
 ## Demo
-http://kyleamathews.github.io/react-image-grid/
+http://kyleamathews.github.io/react-component-gallery/
