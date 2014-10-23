@@ -29,8 +29,8 @@ changes and re-renders.
 
 If you'll be rendering this component on the server, you'll also want to
 pass in a `initialComponentWidth` prop so the component has a width to
-calculate against. Otherwise the component will return an empty <div />.
-For example, if your rendering for a mobile screen, do something like
+calculate against. Otherwise the component will return an empty `<div />`.
+For example, if you're rendering for a mobile screen, do something like
 `initialComponentWidth=375`
 
 ## Demo
