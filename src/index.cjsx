@@ -36,11 +36,11 @@ module.exports = React.createClass
                   width: "#{componentWidth}px"
                   height: "#{componentWidth*@props.widthHeightRatio}px"
                   display: "inline-block"
-                  "margin-right": "#{marginRight}px"
-                  "margin-bottom": "#{@props.margin}px"
+                  marginRight: "#{marginRight}px"
+                  marginBottom: "#{@props.margin}px"
                   overflow: "hidden"
                   position: "relative"
-                  "vertical-align": "top"
+                  "verticalAlign": "top"
                 }
               }, child)
             )
