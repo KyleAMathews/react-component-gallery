@@ -8,9 +8,6 @@ module.exports = React.createClass
   propTypes:
     children: React.PropTypes.any.isRequired
 
-  getInitialState: ->
-    width: 0
-
   getDefaultProps: ->
     margin: 10
     targetWidth: 200
