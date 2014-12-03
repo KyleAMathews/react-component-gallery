@@ -21,7 +21,7 @@ changes and re-renders.
         className="photos"
         margin=10
         widthHeightRatio=3/5
-        targetWidth=250
+        targetWidth=250>
           <img src="https://example.com/pic1.jpg" />
           <img src="https://example.com/pic2.jpg" />
           <img src="https://example.com/pic3.jpg" />
