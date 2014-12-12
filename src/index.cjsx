@@ -7,14 +7,22 @@ module.exports = React.createClass
 
   propTypes:
     children: React.PropTypes.any.isRequired
+    disableServerRender: React.PropTypes.bool
 
   getDefaultProps: ->
     margin: 10
     targetWidth: 200
     widthHeightRatio: 1
+    disableServerRender: false
 
   render: ->
-    if @state.componentWidth isnt 0
+    # If we don't know the component width, there's nothing we can do.
+    if @state.componentWidth is 0
+      <div />
+    # If we're server rendering and the user has disalbed server rendering.
+    else if not @isMounted() and @props.disableServerRender
+      <div />
+    else
       [componentWidth, componentsPerRow] = @calculateComponentWidth()
       return (
         <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
@@ -44,8 +52,6 @@ module.exports = React.createClass
           )}
         </div>
       )
-    else
-      <div />
 
   calculateComponentWidth: ->
     _calcComponentWidth = (adjustComponentsPerRow = 0) =>
