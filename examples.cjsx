@@ -8,7 +8,7 @@ module.exports = React.createClass
     margin: 10
 
   render: ->
-    <div style={"max-width":'1200px', margin:'0 auto'}>
+    <div style={"maxWidth":'1200px', margin:'0 auto'}>
       <h1>react-component-gallery</h1>
       <a href="https://github.com/KyleAMathews/react-component-gallery">Code on Github</a>
       <p>Create a perfect component gallery every time whatever the size of the
@@ -22,7 +22,7 @@ module.exports = React.createClass
       <pre><code>
       {"""
         <ComponentGallery
-          className="photos"
+          className="example"
           margin=10
           widthHeightRatio=3/5
           targetWidth=250
@@ -60,9 +60,9 @@ module.exports = React.createClass
       <code>{'  '}{@state.margin}px</code>
       <br />
       <br />
-      <h3>Photos</h3>
+      <h3>Components</h3>
       <ComponentGallery
-        className="photos"
+        className="example"
         margin={@state.margin}
         widthHeightRatio=3/5
         targetWidth={@state.targetWidth}>
@@ -75,7 +75,7 @@ module.exports = React.createClass
               background: "rgba(0,0,0,0.5)"
               bottom: 0
               left: 0
-              "line-height": "30px"
+              "lineHeight": "30px"
               height: "30px"
               padding: "0 10px"
               color: "white"
