@@ -9,6 +9,9 @@ You choose a `targetWidth`, `margin`, and `widthHeightRatio` for your components
 math to figure out how to size each component. Listens for when its width
 changes and re-renders.
 
+![screen shot 2014-10-27 at 10 19 40 am](https://cloud.githubusercontent.com/assets/71047/4795569/7a457494-5dfd-11e4-890c-d7e15053c529.png)
+
+
 ## Install
 `npm install react-component-gallery`
 
@@ -18,7 +21,7 @@ changes and re-renders.
         className="photos"
         margin=10
         widthHeightRatio=3/5
-        targetWidth=250
+        targetWidth=250>
           <img src="https://example.com/pic1.jpg" />
           <img src="https://example.com/pic2.jpg" />
           <img src="https://example.com/pic3.jpg" />
