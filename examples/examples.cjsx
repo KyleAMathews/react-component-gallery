@@ -22,7 +22,7 @@ module.exports = React.createClass
       <pre><code>
       {"""
         <ComponentGallery
-          className="photos"
+          className="example"
           margin=10
           widthHeightRatio=3/5
           targetWidth=250
@@ -60,9 +60,9 @@ module.exports = React.createClass
       <code>{'  '}{@state.margin}px</code>
       <br />
       <br />
-      <h3>Photos</h3>
+      <h3>Components</h3>
       <ComponentGallery
-        className="photos"
+        className="example"
         margin={@state.margin}
         widthHeightRatio=3/5
         targetWidth={@state.targetWidth}>
