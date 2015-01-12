@@ -19,7 +19,7 @@ module.exports = React.createClass
     # If we don't know the component width, there's nothing we can do.
     if @state.componentWidth is 0
       <div />
-    # If we're server rendering and the user has disalbed server rendering.
+    # If we're server rendering and the user has disabled server rendering.
     else if not @isMounted() and @props.disableServerRender
       <div />
     else
