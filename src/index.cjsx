@@ -1,4 +1,5 @@
 React = require 'react'
+PropTypes = React.PropTypes
 componentWidthMixin = require 'react-component-width-mixin'
 
 module.exports = React.createClass
@@ -6,8 +7,12 @@ module.exports = React.createClass
   mixins: [componentWidthMixin]
 
   propTypes:
-    children: React.PropTypes.any.isRequired
-    disableServerRender: React.PropTypes.bool
+    children: PropTypes.any.isRequired
+    disableServerRender: PropTypes.bool
+    margin: PropTypes.number
+    targetWidth: PropTypes.number
+    widthHeightRatio: PropTypes.number
+    disableServerRender: PropTypes.bool
 
   getDefaultProps: ->
     margin: 10
