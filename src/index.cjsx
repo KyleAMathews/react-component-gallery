@@ -1,16 +1,25 @@
 React = require 'react'
+PropTypes = React.PropTypes
 componentWidthMixin = require 'react-component-width-mixin'
+
+calculateLayout = require './calculate_layout'
 
 module.exports = React.createClass
   displayName: "ComponentGallery"
   mixins: [componentWidthMixin]
 
   propTypes:
-    children: React.PropTypes.any.isRequired
-    disableServerRender: React.PropTypes.bool
+    children: PropTypes.any.isRequired
+    disableServerRender: PropTypes.bool
+    margin: PropTypes.number
+    noMarginBottomOnLastRow: PropTypes.bool
+    marginBottom: PropTypes.number
+    targetWidth: PropTypes.number
+    widthHeightRatio: PropTypes.number
 
   getDefaultProps: ->
     margin: 10
+    noMarginBottomOnLastRow: false
     targetWidth: 200
     widthHeightRatio: 1
     disableServerRender: false
@@ -19,14 +28,27 @@ module.exports = React.createClass
     # If we don't know the component width, there's nothing we can do.
     if @state.componentWidth is 0
       <div />
-    # If we're server rendering and the user has disalbed server rendering.
+    # If we're server rendering and the user has disabled server rendering.
     else if not @isMounted() and @props.disableServerRender
       <div />
     else
-      [componentWidth, componentsPerRow] = @calculateComponentWidth()
+      [componentWidth, componentsPerRow] = calculateLayout(@props, @state)
       return (
         <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
           {React.Children.map(@props.children, (child, i) =>
+            marginBottom = @props.margin
+
+            # Disable margin bottom on last row.
+            if @props.noMarginBottomOnLastRow
+              # Is this component on the last row?
+              numRows = Math.ceil(React.Children.count(@props.children) / componentsPerRow)
+              if (i + 1) > ((numRows - 1) * componentsPerRow)
+                marginBottom = 0
+
+            # Set marginBottom if passed in specifically.
+            if @props.marginBottom and marginBottom isnt 0
+              marginBottom = @props.marginBottom
+
             if componentsPerRow is 1
               marginRight = 0
             else if i isnt 0 and (i + 1) % componentsPerRow is 0
@@ -42,7 +64,7 @@ module.exports = React.createClass
                   height: "#{componentWidth*@props.widthHeightRatio}px"
                   display: "inline-block"
                   marginRight: "#{marginRight}px"
-                  marginBottom: "#{@props.margin}px"
+                  marginBottom: "#{marginBottom}px"
                   overflow: "hidden"
                   position: "relative"
                   "verticalAlign": "top"
@@ -52,36 +74,3 @@ module.exports = React.createClass
           )}
         </div>
       )
-
-  calculateComponentWidth: ->
-    _calcComponentWidth = (adjustComponentsPerRow = 0) =>
-      # Calculate the # of components per row to place.
-      componentCount = React.Children.count(@props.children)
-      componentsPerRow = Math.round(@state.componentWidth/@props.targetWidth)
-      componentsPerRow = componentsPerRow - adjustComponentsPerRow
-
-      # There has to be at least one component per row.
-      componentsPerRow = Math.max(componentsPerRow, 1)
-      if componentsPerRow > componentCount
-        componentsPerRow = componentCount
-
-      # Calculate the per-component width with space for in-between
-      # components subtracted
-      rawWidth = @state.componentWidth / componentsPerRow
-      marginRightOffset = ((@props.margin * componentsPerRow) - @props.margin) / componentsPerRow
-      componentWidth = rawWidth - marginRightOffset - 0.25
-
-      # Don't get too big.
-      maxWidth = if @props.maxWidth? then @props.maxWidth else @props.targetWidth * 1.5
-      componentWidth = Math.min(componentWidth, maxWidth)
-      return [componentWidth, componentsPerRow, marginRightOffset]
-
-    [componentWidth, componentsPerRow, marginRightOffset] = _calcComponentWidth()
-
-    # If the total margin used in a row is greater than one component, drop the components
-    # per row.
-    if componentWidth < marginRightOffset * componentsPerRow
-      adjustment = Math.round((marginRightOffset*componentsPerRow)/componentWidth)
-      [componentWidth, componentsPerRow, marginRightOffset] = _calcComponentWidth(adjustment)
-
-    return [componentWidth, componentsPerRow]
