@@ -43,4 +43,4 @@ describe 'calculateLayout', ->
 
     expect(result).to.be.instanceOf(Array)
     expect(result).to.have.length(2)
-    expect(result[1]).to.equal(2) # Should have 5 components on a row
+    expect(result[1]).to.equal(3)
