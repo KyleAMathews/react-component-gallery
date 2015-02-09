@@ -12,12 +12,14 @@ module.exports = React.createClass
     children: PropTypes.any.isRequired
     disableServerRender: PropTypes.bool
     margin: PropTypes.number
+    noMarginBottomOnLastRow: PropTypes.bool
     targetWidth: PropTypes.number
     widthHeightRatio: PropTypes.number
     disableServerRender: PropTypes.bool
 
   getDefaultProps: ->
     margin: 10
+    noMarginBottomOnLastRow: false
     targetWidth: 200
     widthHeightRatio: 1
     disableServerRender: false
@@ -34,6 +36,14 @@ module.exports = React.createClass
       return (
         <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
           {React.Children.map(@props.children, (child, i) =>
+            marginBottom = @props.margin
+
+            if @props.noMarginBottomOnLastRow
+              # Is this component on the last row?
+              numRows = Math.ceil(React.Children.count(@props.children) / componentsPerRow)
+              if (i + 1) > ((numRows - 1) * componentsPerRow)
+                marginBottom = 0
+
             if componentsPerRow is 1
               marginRight = 0
             else if i isnt 0 and (i + 1) % componentsPerRow is 0
@@ -49,7 +59,7 @@ module.exports = React.createClass
                   height: "#{componentWidth*@props.widthHeightRatio}px"
                   display: "inline-block"
                   marginRight: "#{marginRight}px"
-                  marginBottom: "#{@props.margin}px"
+                  marginBottom: "#{marginBottom}px"
                   overflow: "hidden"
                   position: "relative"
                   "verticalAlign": "top"
