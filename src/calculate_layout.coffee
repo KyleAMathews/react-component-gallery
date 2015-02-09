@@ -1,9 +1,15 @@
-React = require 'react'
+isArray = require 'isarray'
 
 module.exports = (props, state) ->
   _calcComponentWidth = (adjustComponentsPerRow = 0) ->
+    # Count # of children.
+    if props.children
+      componentCount = if isArray(props.children) then props.children.length else 1
+    else
+      # No children, return.
+      return [0,0]
+
     # Calculate the # of components per row to place.
-    componentCount = React.Children.count(props.children)
     componentsPerRow = Math.round(state.componentWidth/props.targetWidth)
     componentsPerRow = componentsPerRow - adjustComponentsPerRow
 
