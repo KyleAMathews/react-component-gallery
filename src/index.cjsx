@@ -13,10 +13,9 @@ module.exports = React.createClass
     disableServerRender: PropTypes.bool
     margin: PropTypes.number
     noMarginBottomOnLastRow: PropTypes.bool
-    marginRightBottomRatio: PropTypes.number
+    marginBottom: PropTypes.number
     targetWidth: PropTypes.number
     widthHeightRatio: PropTypes.number
-    disableServerRender: PropTypes.bool
 
   getDefaultProps: ->
     margin: 10
@@ -24,7 +23,6 @@ module.exports = React.createClass
     targetWidth: 200
     widthHeightRatio: 1
     disableServerRender: false
-    marginRightBottomRatio: 1
 
   render: ->
     # If we don't know the component width, there's nothing we can do.
@@ -38,6 +36,8 @@ module.exports = React.createClass
       return (
         <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
           {React.Children.map(@props.children, (child, i) =>
+            marginBottom = @props.margin
+
             # Disable margin bottom on last row.
             if @props.noMarginBottomOnLastRow
               # Is this component on the last row?
@@ -45,9 +45,9 @@ module.exports = React.createClass
               if (i + 1) > ((numRows - 1) * componentsPerRow)
                 marginBottom = 0
 
-            # Calculate marginBottom
-            unless marginBottom is 0
-              marginBottom = @props.margin * @props.marginRightBottomRatio
+            # Set marginBottom if passed in specifically.
+            if @props.marginBottom and marginBottom isnt 0
+              marginBottom = @props.marginBottom
 
             if componentsPerRow is 1
               marginRight = 0
