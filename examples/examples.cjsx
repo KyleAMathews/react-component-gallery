@@ -24,6 +24,7 @@ module.exports = React.createClass
         <ComponentGallery
           className="example"
           margin=10
+          noMarginBottomOnLastRow=true
           widthHeightRatio=3/5
           targetWidth=250
             <img src="https://example.com/pic1.jpg" />
@@ -32,6 +33,8 @@ module.exports = React.createClass
             <img src="https://example.com/pic4.jpg" />
             <img src="https://example.com/pic5.jpg" />
             <img src="https://example.com/pic6.jpg" />
+            <img src="https://storage.googleapis.com/relaterocket-logos/nike.com-black@2x.png" />
+            <img src="https://storage.googleapis.com/relaterocket-logos/gopro.com-black@2x.png" />
         </ComponentGallery>
         """}
       </code></pre>
@@ -63,9 +66,10 @@ module.exports = React.createClass
       <h3>Components</h3>
       <ComponentGallery
         className="example"
-        margin={@state.margin}
+        margin={parseInt(@state.margin, 10)}
+        noMarginBottomOnLastRow=true
         widthHeightRatio=3/5
-        targetWidth={@state.targetWidth}>
+        targetWidth={parseInt(@state.targetWidth, 10)}>
           <div>
             <img src="https://farm1.staticflickr.com/55/148800272_86cffac801_z.jpg" />
             <span style={
@@ -90,6 +94,8 @@ module.exports = React.createClass
           <img src="https://farm6.staticflickr.com/5516/11906727035_b5ccf50dbd_z.jpg" />
           <img src="https://farm6.staticflickr.com/5495/11817560513_41b2f225a5_z.jpg" />
           <img src="https://farm4.staticflickr.com/3767/10850685734_996f244676_z.jpg" />
+          <img src="https://storage.googleapis.com/relaterocket-logos/nike.com-black@2x.png" />
+          <img src="https://storage.googleapis.com/relaterocket-logos/gopro.com-black@2x.png" />
       </ComponentGallery>
 
     </div>
