@@ -18,23 +18,22 @@ module.exports = (props, state) ->
     if componentsPerRow > componentCount
       componentsPerRow = componentCount
 
-    # Calculate the per-component width with space for in-between
-    # components subtracted
-    rawWidth = state.componentWidth / componentsPerRow
-    marginRightOffset = ((props.margin * componentsPerRow) - props.margin) / componentsPerRow
-    componentWidth = rawWidth - marginRightOffset - 0.25
+    # Calculate the per-component width.
+    totalWidthPerComponent = state.componentWidth / componentsPerRow
+    averageRightMargin = ((props.margin * (componentsPerRow - 1))) / componentsPerRow
+    childComponentWidth = totalWidthPerComponent - averageRightMargin - 0.25
 
     # Don't get too big.
     maxWidth = if props.maxWidth? then props.maxWidth else props.targetWidth * 1.5
-    componentWidth = Math.min(componentWidth, maxWidth)
-    return [componentWidth, componentsPerRow, marginRightOffset]
+    childComponentWidth = Math.min(childComponentWidth, maxWidth)
+    return [childComponentWidth, componentsPerRow, averageRightMargin]
 
-  [componentWidth, componentsPerRow, marginRightOffset] = _calcComponentWidth()
+  [childComponentWidth, componentsPerRow, averageRightMargin] = _calcComponentWidth()
 
   # If the total margin used in a row is greater than one component,
-  # drop the components per row.
-  if componentWidth < marginRightOffset * componentsPerRow
-    adjustment = Math.round((marginRightOffset*componentsPerRow)/componentWidth)
-    [componentWidth, componentsPerRow, marginRightOffset] = _calcComponentWidth(adjustment)
+  # drop the number of components per row.
+  if childComponentWidth < (averageRightMargin * (componentsPerRow - 1))
+    adjustment = Math.ceil((averageRightMargin * (componentsPerRow - 1)) / childComponentWidth / 2)
+    [childComponentWidth, componentsPerRow, averageRightMargin] = _calcComponentWidth(adjustment)
 
-  return [componentWidth, componentsPerRow]
+  return [childComponentWidth, componentsPerRow]

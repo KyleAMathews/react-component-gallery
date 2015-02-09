@@ -31,3 +31,16 @@ describe 'calculateLayout', ->
     expect(result).to.be.instanceOf(Array)
     expect(result).to.have.length(2)
     expect(result[1]).to.equal(5) # Should have 5 components on a row
+
+  it 'should handle small widths with large margins gracefully', ->
+    result = calculateLayout({
+      children: [1,2,3,4]
+      targetWidth: 125
+      margin: 80
+    }, {
+      componentWidth: 480
+    })
+
+    expect(result).to.be.instanceOf(Array)
+    expect(result).to.have.length(2)
+    expect(result[1]).to.equal(2) # Should have 5 components on a row
