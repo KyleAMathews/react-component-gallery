@@ -11,11 +11,13 @@ release-major:
 
 build:
 	@$(BIN)/cjsx -cb -o dist src/index.cjsx
+	@$(BIN)/coffee -cb -o dist src/calculate_layout.coffee
 	@$(BIN)/webpack
 
 publish:
 	git push --tags origin HEAD:master
 	@$(BIN)/cjsx -cb -o dist src/index.cjsx
+	@$(BIN)/coffee -cb -o dist src/calculate_layout.coffee
 	npm publish
 
 publish-gh-pages:
