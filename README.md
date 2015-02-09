@@ -15,6 +15,9 @@ changes and re-renders.
 ## Install
 `npm install react-component-gallery`
 
+## Demo
+http://kyleamathews.github.io/react-component-gallery/
+
 ## Usage
 
       <ComponentGallery
@@ -36,5 +39,14 @@ calculate against. Otherwise the component will return an empty `<div />`.
 For example, if you're rendering for a mobile screen, do something like
 `initialComponentWidth=375`
 
-## Demo
-http://kyleamathews.github.io/react-component-gallery/
+## Props
+
+Prop                       |    Description
+---------------------------|----------------
+`children`                 | Any valid react component
+`disableServerRender`      | Renders a empty <div/> on the server
+`margin`                   | The desired margin in pixels for separating components in the gallery
+`noMarginBottomOnLastRow`  | Set marginBottom to 0 for components on the last row. Simplifies styling gallery as a whole.
+`marginBottom`             | Set marginBottom (in pixels) separate from marginRight
+`targetWidth`              | Desired width for each component. Used when calculating the gallery layout.
+`widthHeightRatio`         | Defaults to 1 but useful if components don't fit well in a square.
