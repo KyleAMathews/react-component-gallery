@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "isarray": "0.0.1",
-    "react-component-width-mixin": "^1.1.4"
+    "react-component-width-mixin": "^1.1.7"
   },
   "devDependencies": {
     "chai": "^1.10.0",
