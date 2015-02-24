@@ -1,6 +1,7 @@
 _ = require 'underscore'
 React = require('react')
 ComponentGallery = require '../src/index'
+{Container} = require 'react-responsive-grid'
 
 module.exports = React.createClass
   getInitialState: ->
@@ -8,7 +9,7 @@ module.exports = React.createClass
     margin: 10
 
   render: ->
-    <div style={"maxWidth":'1200px', margin:'0 auto'}>
+    <Container style={"maxWidth":'1100px'}>
       <h1>react-component-gallery</h1>
       <a href="https://github.com/KyleAMathews/react-component-gallery">Code on Github</a>
       <p>Create a perfect component gallery every time whatever the size of the
@@ -98,7 +99,7 @@ module.exports = React.createClass
           <img src="https://storage.googleapis.com/relaterocket-logos/gopro.com-black@2x.png" />
       </ComponentGallery>
 
-    </div>
+    </Container>
 
   onWidthChange: (e) ->
     @setState targetWidth: @refs.slider.getDOMNode().value
