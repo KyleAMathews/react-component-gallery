@@ -45,7 +45,7 @@ Prop                       |    Description
 ---------------------------|----------------
 `children`                 | Any valid react component
 `disableServerRender`      | Renders a empty <div/> on the server
-`margin`                   | The desired margin in pixels for separating components in the gallery
+`margin`                   | Set the right and bottom margin for each component. You can set the marginBottom separately if desired.
 `noMarginBottomOnLastRow`  | Set marginBottom to 0 for components on the last row. Simplifies styling gallery as a whole.
 `marginBottom`             | Set marginBottom (in pixels) separate from marginRight
 `targetWidth`              | Desired width for each component. Used when calculating the gallery layout.

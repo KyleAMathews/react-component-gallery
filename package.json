@@ -1,14 +1,14 @@
 {
   "name": "react-component-gallery",
   "description": "React component for laying out an evenly spaced gallery of child components",
-  "version": "1.1.3",
+  "version": "1.1.5",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "bugs": {
     "url": "https://github.com/KyleAMathews/react-component-gallery/issues"
   },
   "dependencies": {
     "isarray": "0.0.1",
-    "react-component-width-mixin": "^1.1.4"
+    "react-component-width-mixin": "^1.1.7"
   },
   "devDependencies": {
     "chai": "^1.10.0",
