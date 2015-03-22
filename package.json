@@ -18,6 +18,7 @@
     "coffee-script": "^1.8.0",
     "css-loader": "^0.9.1",
     "gulp": "^3.8.10",
+    "json-loader": "^0.5.1",
     "mocha": "^2.1.0",
     "mocha-unfunk-reporter": "^0.4.0",
     "react-hot-loader": "^1.1.1",

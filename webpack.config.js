@@ -31,7 +31,7 @@ module.exports = {
     loaders: [
       { test: /\.css$/, loaders: ['style', 'css']},
       { test: /\.cjsx$/, loaders: ['react-hot', 'coffee', 'cjsx']},
-      { test: /\.coffee$/, loader: 'coffee' }
+      { test: /\.coffee$/, loader: 'coffee'}
     ]
   }
 };
