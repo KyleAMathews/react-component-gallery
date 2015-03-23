@@ -65,6 +65,7 @@ module.exports = React.createClass
       <br />
       <h3>Components</h3>
       <ComponentGallery
+          mode="auto"
           className="example"
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true

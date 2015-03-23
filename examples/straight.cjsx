@@ -65,9 +65,9 @@ module.exports = React.createClass
       <h3>Components</h3>
       <ComponentGallery
           className="example"
+          mode="straight"
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true
-          widthHeightRatio=3/5
           targetWidth={parseInt(@state.targetWidth, 10)}>
         {children}
       </ComponentGallery>

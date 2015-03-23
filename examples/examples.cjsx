@@ -8,7 +8,6 @@ AutoGallery = require './auto'
 module.exports = React.createClass
 
   render: ->
-
     <Container style={"maxWidth":'1100px'}>
       <h1>react-component-gallery</h1>
       <a href="https://github.com/KyleAMathews/react-component-gallery">Code on Github</a>
