@@ -5,6 +5,8 @@ ComponentGallery = require '../src/index'
 module.exports = React.createClass
 
   getInitialState: ->
+    targetWidth: 200
+    margin: 10
     children: []
 
   componentDidMount: ->
