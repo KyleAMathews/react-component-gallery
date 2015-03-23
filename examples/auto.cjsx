@@ -8,7 +8,25 @@ module.exports = React.createClass
     minTargetWidth: 100
     maxTargetWidth: 200
     margin: 10
-    children: []
+    children: [
+      <div>
+        <img src="https://farm1.staticflickr.com/55/148800272_86cffac801_z.jpg" />
+        <span style={
+          position: "absolute"
+          bottom: 0
+          width: "100%"
+          background: "rgba(0,0,0,0.5)"
+          bottom: 0
+          left: 0
+          "lineHeight": "30px"
+          height: "30px"
+          padding: "0 10px"
+          color: "white"
+        }>Sweet label bro</span>
+      </div>,
+      <p style={margin: 0}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus neque massa, sagittis at ex a, suscipit facilisis augue. In vitae placerat est. Aliquam mollis orci id arcu condimentum gravida.
+      </p>,
+    ]
 
   componentDidMount: ->
     _this = this
@@ -26,7 +44,12 @@ module.exports = React.createClass
         <img src={item.url}/>
 
       if components.length
-        _this.setState {children: components}
+        _this.setState {
+          children: React.addons.update(
+            _this.state.children,
+            $push: components
+          )
+        }
 
     onLoad = ->
       s = new google.search.ImageSearch()
