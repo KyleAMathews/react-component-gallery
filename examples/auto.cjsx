@@ -73,3 +73,9 @@ module.exports = React.createClass
         {children}
       </ComponentGallery>
     </div>
+
+  onWidthChange: (e) ->
+    @setState targetWidth: @refs.slider.getDOMNode().value
+
+  onMarginChange: (e) ->
+    @setState margin: @refs.margin.getDOMNode().value
