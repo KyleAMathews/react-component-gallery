@@ -46,7 +46,7 @@ module.exports = React.createClass
         min=50
         max=500
         ref="slider"
-        initialValue={@state.targetWidth}
+        value={@state.targetWidth}
         onChange={@onWidthChange} />
       <code>{'  '}{@state.targetWidth}px</code>
       <br />
@@ -57,7 +57,7 @@ module.exports = React.createClass
         min=0
         max=50
         ref="margin"
-        initialValue={@state.margin}
+        value={@state.margin}
         onChange={@onMarginChange} />
       <code>{'  '}{@state.margin}px</code>
       <br />

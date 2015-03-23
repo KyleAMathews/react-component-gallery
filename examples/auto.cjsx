@@ -5,7 +5,8 @@ ComponentGallery = require '../src/index'
 module.exports = React.createClass
 
   getInitialState: ->
-    targetWidth: 200
+    minTargetWidth: 100
+    maxTargetWidth: 200
     margin: 10
     children: []
 
@@ -40,17 +41,26 @@ module.exports = React.createClass
     children = @state.children
 
     <div>
-      <h2>Demo 1: Straight mode (fixed image ratio)</h2>
-      <h3>targetWidth</h3>
+      <h2>Demo 2: Auto mode (auto fitting)</h2>
+      <h3>minTargetWidth</h3>
       <input
         type="range"
         min=50
         max=500
-        ref="slider"
-        initialValue={@state.targetWidth}
-        onChange={@onWidthChange} />
-      <code>{'  '}{@state.targetWidth}px</code>
+        ref="sliderMin"
+        value={@state.minTargetWidth}
+        onChange={@onMinTargetWidthChange} />
+      <code>{'  '}{@state.minTargetWidth}px</code>
       <br />
+      <h3>maxTargetWidth</h3>
+      <input
+        type="range"
+        min=50
+        max=500
+        ref="sliderMax"
+        value={@state.maxTargetWidth}
+        onChange={@onMaxTargetWidthChange} />
+      <code>{'  '}{@state.maxTargetWidth}px</code>
       <br />
       <h3>margin</h3>
       <input
@@ -58,7 +68,7 @@ module.exports = React.createClass
         min=0
         max=50
         ref="margin"
-        initialValue={@state.margin}
+        value={@state.margin}
         onChange={@onMarginChange} />
       <code>{'  '}{@state.margin}px</code>
       <br />
@@ -69,14 +79,30 @@ module.exports = React.createClass
           className="example"
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true
-          widthHeightRatio=3/5
-          targetWidth={parseInt(@state.targetWidth, 10)}>
+          minTargetWidth={parseInt(@state.minTargetWidth, 10)}
+          maxTargetWidth={parseInt(@state.maxTargetWidth, 10)}>
         {children}
       </ComponentGallery>
     </div>
 
-  onWidthChange: (e) ->
-    @setState targetWidth: @refs.slider.getDOMNode().value
+  onMaxTargetWidthChange: (e) ->
+    minValue = parseInt @refs.sliderMin.getDOMNode().value
+    maxValue = parseInt @refs.sliderMax.getDOMNode().value
+    state = 
+      maxTargetWidth: maxValue
+    if maxValue < minValue
+      state.minTargetWidth = maxValue
+    @setState state
+
+
+  onMinTargetWidthChange: (e) ->
+    minValue = parseInt @refs.sliderMin.getDOMNode().value
+    maxValue = parseInt @refs.sliderMax.getDOMNode().value
+    state = 
+      minTargetWidth: minValue
+    if minValue > maxValue
+      state.maxTargetWidth = minValue
+    @setState state
 
   onMarginChange: (e) ->
     @setState margin: @refs.margin.getDOMNode().value

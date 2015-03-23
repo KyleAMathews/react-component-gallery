@@ -1,64 +1,74 @@
 React = require 'react'
 PropTypes = React.PropTypes
-calculateLayout = require './calculate_layout'
+GalleryRow = require './row'
 
 
 module.exports = React.createClass
 
   propTypes:
     children: PropTypes.any.isRequired
-    disableServerRender: PropTypes.bool
     margin: PropTypes.number
     noMarginBottomOnLastRow: PropTypes.bool
     marginBottom: PropTypes.number
     maxTargetWidth: PropTypes.number
     minTargetWidth: PropTypes.number
+    containerWidth: PropTypes.number.isRequired
+    className: PropTypes.string
+    galleryClassName: PropTypes.string
+    rowClassName: PropTypes.string
 
   getDefaultProps: ->
     margin: 10
     noMarginBottomOnLastRow: false
-    disableServerRender: false
-    targetMaxWidth: 200
-    targetMinWidth: 100
-    targetWidth: 200  # temporary
-    widthHeightRatio: 1  # temporary
+    maxTargetWidth: 200
+    minTargetWidth: 100
 
   render: ->
-    [componentWidth, componentsPerRow] = calculateLayout(@props, @state)
-    <div>
-      {React.Children.map(@props.children, (child, i) =>
+    marginRight = @props.margin || 0
+    containerWidth = @props.containerWidth || 0
+    averageTargetWidth = (@props.maxTargetWidth + @props.minTargetWidth) / 2
+    itemsPerRow = Math.floor((containerWidth + marginRight) / (averageTargetWidth + marginRight))  # assumption
+    children = @getChildrenAsArray @props.children
+    childrenChunks = @makeChunks(children, itemsPerRow)
+
+    <div  className="component-gallery #{@props.galleryClassName || @props.className || ''}"
+          style={{overflow: "hidden"}}>
+      {childrenChunks.map (items, i) =>
 
         # margin bottom
         marginBottom = @props.marginBottom || @props.margin
         # Disable margin bottom on last row.
         if @props.noMarginBottomOnLastRow
           # Is this component on the last row?
-          numRows = Math.ceil(React.Children.count(@props.children) / componentsPerRow)
-          if (i + 1) > ((numRows - 1) * componentsPerRow)
+          if i is (childrenChunks.length - 1)
             marginBottom = 0
-        
-        # margin right
-        if componentsPerRow is 1
-          marginRight = 0
-        else if i isnt 0 and (i + 1) % componentsPerRow is 0
-          marginRight = 0
-        else
-          marginRight = @props.margin
 
-        # calculate child styles
-        childStyle =
-          width: "#{componentWidth}px"
-          height: "#{componentWidth*@props.widthHeightRatio}px"
-          display: "inline-block"
-          marginRight: "#{marginRight}px"
-          marginBottom: "#{marginBottom}px"
-          overflow: "hidden"
-          position: "relative"
-          verticalAlign: "top"
-
-        <div  className={"component-wrapper"}
-              style={childStyle}>
-          { child }
-        </div>
-      )}
+        # row component
+        <GalleryRow
+              key={i}
+              rowClassName={@props.rowClassName}
+              minTargetWidth={@props.minTargetWidth}
+              maxTargetWidth={@props.maxTargetWidth}
+              averageTargetWidth={averageTargetWidth}
+              marginRight={marginRight}
+              marginBottom={marginBottom}
+              containerWidth={@props.containerWidth}>      
+          {items}
+        </GalleryRow>
+      }
     </div>
+
+  getChildrenAsArray: (children)->
+    result = []
+    React.Children.forEach children, (child)->
+      result.push child
+    return result
+
+  makeChunks: (array, chunkLenght)->
+    array = array.slice()
+    chunks = []
+    chunk = array.splice(0, chunkLenght)
+    while chunk.length
+      chunks.push(chunk)
+      chunk = array.splice(0, chunkLenght)
+    return chunks

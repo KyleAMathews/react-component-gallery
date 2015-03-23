@@ -12,9 +12,11 @@ module.exports = React.createClass
 
   propTypes:
     mode: PropTypes.string.isRequired
+    disableServerRender: PropTypes.bool
     
   getDefaultProps: ->
     mode: "sraight"
+    disableServerRender: false
     
   render: ->
     # If we don't know the component width, there's nothing we can do.
@@ -26,16 +28,9 @@ module.exports = React.createClass
     else
       # straight mode
       if @props.mode is "straight"
-        gallery =
-          <StraightGallery containerWidth={@state.componentWidth} {...@props} />
+        <StraightGallery containerWidth={@state.componentWidth} {...@props} />
       # auto mode
       else if @props.mode is "auto"
-        gallery =
-          <AutoGallery containerWidth={@state.componentWidth} {...@props} />
-
-      if gallery
-        <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
-          { gallery }
-        </div>
+        <AutoGallery containerWidth={@state.componentWidth} {...@props} />
       else
         <div />

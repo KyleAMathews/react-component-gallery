@@ -1,4 +1,3 @@
-isArray = require 'isarray'
 
 module.exports = (props) ->
   # Formula is (totalWidth = numComponentsPerRow * componentWidth + ((numComponentsPerRow - 1) * margin))

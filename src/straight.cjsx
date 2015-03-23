@@ -7,23 +7,27 @@ module.exports = React.createClass
 
   propTypes:
     children: PropTypes.any.isRequired
-    disableServerRender: PropTypes.bool
     margin: PropTypes.number
     noMarginBottomOnLastRow: PropTypes.bool
     marginBottom: PropTypes.number
     targetWidth: PropTypes.number
-    widthHeightRatio: PropTypes.number
+    widthHeightRatio: PropTypes.number    
+    className: PropTypes.string
+    galleryClassName: PropTypes.string
+    rowClassName: PropTypes.string
 
   getDefaultProps: ->
     margin: 10
     noMarginBottomOnLastRow: false
-    disableServerRender: false
     widthHeightRatio: 1
     targetWidth: 200
     
   render: ->
     [componentWidth, componentsPerRow] = calculateLayout(@props)
-    <div>
+
+    <div  className="component-gallery #{ @props.galleryClassName || @props.className || '' }"
+          style={{overflow: "hidden"}}>
+
       {React.Children.map(@props.children, (child, i) =>
         
         # margin bottom
@@ -55,7 +59,8 @@ module.exports = React.createClass
           verticalAlign: "top"
 
         <div  className={"component-wrapper"}
-              style={childStyle}>
+              style={childStyle}
+              key={i}>
           { child }
         </div>
       )}
