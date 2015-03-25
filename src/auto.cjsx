@@ -31,6 +31,11 @@ module.exports = React.createClass
     children = @getChildrenAsArray @props.children
     childrenChunks = @makeChunks(children, itemsPerRow)
 
+    # if number of chldren components is to small
+    # _width = averageTargetWidth * (children.length + 1) + marginRight * children.length
+    # if _width < containerWidth
+    #   containerWidth = _width
+
     <div  className="component-gallery #{@props.galleryClassName || @props.className || ''}"
           style={{overflow: "hidden"}}>
       {childrenChunks.map (items, i) =>
@@ -39,20 +44,21 @@ module.exports = React.createClass
         marginBottom = @props.marginBottom || @props.margin
         # Disable margin bottom on last row.
         if @props.noMarginBottomOnLastRow
-          # Is this component on the last row?
+          # Check whether this component on the last row
           if i is (childrenChunks.length - 1)
             marginBottom = 0
 
         # row component
         <GalleryRow
-              key={i}
               rowClassName={@props.rowClassName}
+              rowId={i}
+              targetWidth={averageTargetWidth}
               minTargetWidth={@props.minTargetWidth}
               maxTargetWidth={@props.maxTargetWidth}
-              averageTargetWidth={averageTargetWidth}
               marginRight={marginRight}
               marginBottom={marginBottom}
-              containerWidth={@props.containerWidth}>      
+              containerWidth={containerWidth}
+              key={i}>      
           {items}
         </GalleryRow>
       }

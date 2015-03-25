@@ -24,15 +24,15 @@ module.exports = React.createClass
           color: "white"
         }>Sweet label bro</span>
       </div>,
-      <p style={margin: 0}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus neque massa, sagittis at ex a, suscipit facilisis augue. In vitae placerat est. Aliquam mollis orci id arcu condimentum gravida.
-      </p>,
+      # <p style={margin: 0}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus neque massa, sagittis at ex a, suscipit facilisis augue. In vitae placerat est. Aliquam mollis orci id arcu condimentum gravida.
+      # </p>,
     ]
 
   componentDidMount: ->
     _this = this
 
     if not window.google
-      comnsole.warn 'Google API is not available'
+      console.warn 'Google API is not available'
       return
 
     google.load 'search', 1, {"language" : "en"}
@@ -40,7 +40,7 @@ module.exports = React.createClass
     searchCallback = ->
       searchResponse = this
       searchResults = searchResponse.results || []
-      components = searchResults.map (item) ->
+      components = searchResults.map (item) =>
         <img src={item.url}/>
 
       if components.length
