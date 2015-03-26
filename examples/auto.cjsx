@@ -1,5 +1,6 @@
 React = require 'react/addons'
 ComponentGallery = require '../src/index'
+_ = require 'underscore'
 
 
 module.exports = React.createClass
@@ -44,11 +45,13 @@ module.exports = React.createClass
         <img src={item.url}/>
 
       if components.length
+        components = React.addons.update(
+          _this.state.children,
+          $push: components
+        )
+        components = _.shuffle(components)
         _this.setState {
-          children: React.addons.update(
-            _this.state.children,
-            $push: components
-          )
+          children: components
         }
 
     onLoad = ->
@@ -57,8 +60,16 @@ module.exports = React.createClass
       s.setSearchCompleteCallback s, searchCallback
       s.setNoHtmlGeneration
 
-      s.execute 'images portraits'
-      # s.execute 'public infographics'
+      getImages = ->
+        s.execute 'images portraits'
+        # s.execute 'public infographics'
+
+      # stash
+      window.moreImages = ->
+        getImages()
+
+      # initial load
+      getImages()
 
     google.setOnLoadCallback onLoad
 
@@ -97,6 +108,7 @@ module.exports = React.createClass
         onChange={@onMarginChange} />
       <code>{'  '}{@state.margin}px</code>
       <br />
+      <input type="button" onClick={@onButtonClick}/>
       <br />
       <h3>Components</h3>
       <ComponentGallery

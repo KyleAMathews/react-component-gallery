@@ -28,7 +28,7 @@ module.exports = React.createClass
     maxTargetWidth = @props.maxTargetWidth
     minTargetWidth = @props.minTargetWidth
     averageTargetWidth = (maxTargetWidth + minTargetWidth) / 2
-    itemsPerRow = Math.floor((@props.containerWidth + marginRight) / (averageTargetWidth + marginRight))
+    itemsPerRow = Math.round((@props.containerWidth + marginRight) / (averageTargetWidth + marginRight))
     children = @getChildrenAsArray @props.children
     childrenChunks = @makeChunks(children, itemsPerRow)
 
@@ -38,8 +38,8 @@ module.exports = React.createClass
 
         containerWidth = @props.containerWidth || 0
         # if number of chldren components is to small
-        _width = maxTargetWidth * items.length + marginRight * (items.length - 1)         # this one works better
-        # _width = averageTargetWidth * (items.length + 1) + marginRight * items.length   # alternative
+        # _width = maxTargetWidth * items.length + marginRight * (items.length - 1)     # alternative     
+        _width = averageTargetWidth * (items.length + 1) + marginRight * items.length   # this one works better
         if _width < containerWidth
           containerWidth = _width
 

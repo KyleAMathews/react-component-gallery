@@ -1,5 +1,6 @@
 React = require 'react'
 PropTypes = React.PropTypes
+equal = require 'deep-equal'
 
 
 module.exports = React.createClass
@@ -21,35 +22,32 @@ module.exports = React.createClass
     visibility: "hidden"    # row visibility, become hidden when fitting in progress
 
   componentDidMount: ->
-    console.log '>>> did mount'
     # try to fit
     @fitChildren()
 
   componentWillReceiveProps: (nextProps)->
     if @props.minTargetWidth isnt nextProps.minTargetWidth or
           @props.maxTargetWidth isnt nextProps.maxTargetWidth or
-              @props.children.length isnt nextProps.children.length or
-                  @props.containerWidth isnt nextProps.containerWidth or
-                      @props.marginRight isnt nextProps.marginRight
-      newState = 
+            @props.averageTargetWidth isnt nextProps.averageTargetWidth or
+              @props.containerWidth isnt nextProps.containerWidth or
+                @props.marginRight isnt nextProps.marginRight or
+                  @props.children.length isnt nextProps.children.length or
+                    not equal @props.children, nextProps.children
+      newState =
         widthArray:
           @getFilledArray nextProps.children.length, nextProps.averageTargetWidth
         height: "auto"
         visibility: "hidden"
-      console.log '>>> receive new props'
       @setState newState
     
   componentDidUpdate: (prevProps, prevState) ->
     # try to fit
     if @state.visibility is "hidden"
-      console.log '>>> did update'
       @fitChildren()
 
   render: ->
     {widthArray, height, visibility} = @state
     children = @props.children
-
-    console.log '>>> render ', children.length, widthArray, height, visibility, @props.containerWidth
 
     <div  className="component-row #{@props.rowClassName || ''}"
           style={{
@@ -107,7 +105,6 @@ module.exports = React.createClass
     
     if (@hasNoMultimediaElements @getDOMNode()) or
           (@isAllChildrenLoaded @getDOMNode())
-      console.log '>>> fit'
       newState = @_calculate_layout()
       newState.visibility = 'visible'
       @setState newState
