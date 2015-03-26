@@ -10,8 +10,8 @@ module.exports = React.createClass
     margin: PropTypes.number
     noMarginBottomOnLastRow: PropTypes.bool
     marginBottom: PropTypes.number
-    maxTargetWidth: PropTypes.number
-    minTargetWidth: PropTypes.number
+    maxTargetWidth: PropTypes.number.isRequired
+    minTargetWidth: PropTypes.number.isRequired
     containerWidth: PropTypes.number.isRequired
     className: PropTypes.string
     galleryClassName: PropTypes.string
@@ -25,20 +25,23 @@ module.exports = React.createClass
 
   render: ->
     marginRight = @props.margin || 0
-    containerWidth = @props.containerWidth || 0
-    averageTargetWidth = (@props.maxTargetWidth + @props.minTargetWidth) / 2
-    itemsPerRow = Math.floor((containerWidth + marginRight) / (averageTargetWidth + marginRight))  # assumption
+    maxTargetWidth = @props.maxTargetWidth
+    minTargetWidth = @props.minTargetWidth
+    averageTargetWidth = (maxTargetWidth + minTargetWidth) / 2
+    itemsPerRow = Math.floor((@props.containerWidth + marginRight) / (averageTargetWidth + marginRight))
     children = @getChildrenAsArray @props.children
     childrenChunks = @makeChunks(children, itemsPerRow)
-
-    # if number of chldren components is to small
-    # _width = averageTargetWidth * (children.length + 1) + marginRight * children.length
-    # if _width < containerWidth
-    #   containerWidth = _width
 
     <div  className="component-gallery #{@props.galleryClassName || @props.className || ''}"
           style={{overflow: "hidden"}}>
       {childrenChunks.map (items, i) =>
+
+        containerWidth = @props.containerWidth || 0
+        # if number of chldren components is to small
+        _width = maxTargetWidth * items.length + marginRight * (items.length - 1)         # this one works better
+        # _width = averageTargetWidth * (items.length + 1) + marginRight * items.length   # alternative
+        if _width < containerWidth
+          containerWidth = _width
 
         # margin bottom
         marginBottom = @props.marginBottom || @props.margin
@@ -52,9 +55,9 @@ module.exports = React.createClass
         <GalleryRow
               rowClassName={@props.rowClassName}
               rowId={i}
-              targetWidth={averageTargetWidth}
-              minTargetWidth={@props.minTargetWidth}
-              maxTargetWidth={@props.maxTargetWidth}
+              averageTargetWidth={averageTargetWidth}
+              minTargetWidth={minTargetWidth}
+              maxTargetWidth={maxTargetWidth}
               marginRight={marginRight}
               marginBottom={marginBottom}
               containerWidth={containerWidth}

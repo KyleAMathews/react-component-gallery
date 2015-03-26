@@ -56,7 +56,9 @@ module.exports = React.createClass
       s.setResultSetSize google.search.Search.LARGE_RESULTSET
       s.setSearchCompleteCallback s, searchCallback
       s.setNoHtmlGeneration
+
       s.execute 'images portraits'
+      # s.execute 'public infographics'
 
     google.setOnLoadCallback onLoad
 

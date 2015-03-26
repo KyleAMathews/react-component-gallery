@@ -6,7 +6,7 @@ module.exports = React.createClass
 
   propTypes:
     children: PropTypes.any.isRequired
-    targetWidth: PropTypes.number.isRequired
+    averageTargetWidth: PropTypes.number.isRequired
     maxTargetWidth: PropTypes.number.isRequired
     minTargetWidth: PropTypes.number.isRequired
     containerWidth: PropTypes.number.isRequired
@@ -16,16 +16,14 @@ module.exports = React.createClass
     rowId: PropTypes.number.isRequired
 
   getInitialState: ->
-    widthArray: @getFilledArray @props.children.length, @props.targetWidth
-    height: "auto"
-    visibility: "hidden"
+    widthArray: @getFilledArray @props.children.length, @props.averageTargetWidth  # array of children width
+    height: "auto"          # height of children (one value for all children)
+    visibility: "hidden"    # row visibility, become hidden when fitting in progress
 
   componentDidMount: ->
-    window.setTimeout (=>
-      newState = @fitChildren()
-      newState.visibility = "visible"
-      @setState newState
-    ), 1000
+    console.log '>>> did mount'
+    # try to fit
+    @fitChildren()
 
   componentWillReceiveProps: (nextProps)->
     if @props.minTargetWidth isnt nextProps.minTargetWidth or
@@ -33,22 +31,25 @@ module.exports = React.createClass
               @props.children.length isnt nextProps.children.length or
                   @props.containerWidth isnt nextProps.containerWidth or
                       @props.marginRight isnt nextProps.marginRight
-      newState =
+      newState = 
         widthArray:
-          @getFilledArray nextProps.children.length, nextProps.targetWidth
+          @getFilledArray nextProps.children.length, nextProps.averageTargetWidth
         height: "auto"
         visibility: "hidden"
+      console.log '>>> receive new props'
       @setState newState
-
+    
   componentDidUpdate: (prevProps, prevState) ->
+    # try to fit
     if @state.visibility is "hidden"
-      newState = @fitChildren()
-      newState.visibility = "visible"
-      @setState newState
+      console.log '>>> did update'
+      @fitChildren()
 
   render: ->
     {widthArray, height, visibility} = @state
     children = @props.children
+
+    console.log '>>> render ', children.length, widthArray, height, visibility, @props.containerWidth
 
     <div  className="component-row #{@props.rowClassName || ''}"
           style={{
@@ -69,27 +70,53 @@ module.exports = React.createClass
         # child styles
         childStyle =
           display: "inline-block"
-          width: "#{widthArray[i] || @props.targetWidth}px"
+          width: "#{widthArray[i] || @props.averageTargetWidth}px"
           height: if isFinite height then "#{height}px" else height
           marginRight: "#{marginRight}px"
           overflow: "hidden"
           position: "relative"
           verticalAlign: "top"
 
+        itemRefName = "component-#{@props.rowId}.#{i}"
+
         <div  className={"component-wrapper"}
               style={childStyle}
-              ref={"component-#{@props.rowId}.#{i}"}
+              ref={itemRefName}
+              onLoad={@_on_load_handler}
+              onError={@_on_error_handler.bind(this, itemRefName)}
               key={i}>
           { child }
         </div>
       }
     </div>
 
-  # method returns such value:
+  _on_load_handler: ->
+    @fitChildren()
+
+  _on_error_handler: (itemRefName, event)->
+    element = this.refs[itemRefName].getDOMNode()
+    element.height = "100px"
+    element.height = "100px"
+    items = @getMultimediaElements element
+    items.forEach (item) ->
+      item.error = true
+    @fitChildren()
+
+  fitChildren: ->
+    # if row has no multimedia children - fit it right now
+    
+    if (@hasNoMultimediaElements @getDOMNode()) or
+          (@isAllChildrenLoaded @getDOMNode())
+      console.log '>>> fit'
+      newState = @_calculate_layout()
+      newState.visibility = 'visible'
+      @setState newState
+
+  # method returns components sizes in the following format:
   #   sizes = 
   #     widthArray: [10,20,30,40, ...]
   #     height: 100
-  fitChildren: ->
+  _calculate_layout: ->
     children = @props.children
     length = children.length
     allMargins = @props.marginRight * (length - 1)
@@ -104,11 +131,10 @@ module.exports = React.createClass
       mainComponentHeight = 0
       data = children.map (child, i) =>
         element = @refs["component-#{@props.rowId}.#{i}"].getDOMNode()
-        width = element.offsetWidth
-        height = element.offsetHeight
+        width = parseInt element.offsetWidth
+        height = parseInt element.offsetHeight
         hasMultimedia = true
-        if not element.getElementsByTagName('img').length and
-            not element.getElementsByTagName('video').length
+        if @hasNoMultimediaElements element
           hasMultimedia = false
           if mainComponentHeight < height
             mainComponentId = i
@@ -137,8 +163,8 @@ module.exports = React.createClass
       else
         K = 1
       # result
-      result.widthArray = data.map (item) ->
-        item.width * item.get_k_i K
+      result.widthArray = data.map (item, i) ->
+        item.width * item.get_k_i(K)
       result.height = data[mainComponentId].height * K
 
     result
@@ -150,3 +176,22 @@ module.exports = React.createClass
       array.push value
       i--
     array
+
+  hasNoMultimediaElements: (element) ->
+    not (@getMultimediaElements element).length
+
+  getMultimediaElements: (element) ->
+    (e for e in element.getElementsByTagName('img'))
+
+  isAllChildrenLoaded: (element) ->
+    images = @getMultimediaElements element
+    (images.filter(@isImageLoaded).length is images.length)
+
+  isImageLoaded: (element) ->
+    if element.error    # marked as not loaded
+      return true
+    if not element.complete
+      return false
+    if element.naturalWidth is 0
+      return false
+    return true
