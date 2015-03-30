@@ -68,7 +68,8 @@ module.exports = React.createClass
           mode="straight"
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true
-          targetWidth={parseInt(@state.targetWidth, 10)}>
+          targetWidth={parseInt(@state.targetWidth, 10)}
+          widthHeightRatio={3/5}>
         {children}
       </ComponentGallery>
     </div>

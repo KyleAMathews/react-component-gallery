@@ -26,13 +26,18 @@ module.exports = React.createClass
     @fitChildren()
 
   componentWillReceiveProps: (nextProps)->
-    if @props.minTargetWidth isnt nextProps.minTargetWidth or
-          @props.maxTargetWidth isnt nextProps.maxTargetWidth or
-            @props.averageTargetWidth isnt nextProps.averageTargetWidth or
-              @props.containerWidth isnt nextProps.containerWidth or
-                @props.marginRight isnt nextProps.marginRight or
-                  @props.children.length isnt nextProps.children.length or
-                    not equal @props.children, nextProps.children
+    width = nextProps.averageTargetWidth * nextProps.children.length +
+        nextProps.marginRight * (nextProps.children.length - 1)
+
+    if (Math.abs(width - nextProps.containerWidth) >= nextProps.averageTargetWidth and 
+         (@props.minTargetWidth isnt nextProps.minTargetWidth or
+            @props.maxTargetWidth isnt nextProps.maxTargetWidth or
+              @props.averageTargetWidth isnt nextProps.averageTargetWidth)) or
+                @props.averageTargetWidth < nextProps.minTargetWidth or
+                  @props.averageTargetWidth > nextProps.maxTargetWidth or
+                    @props.marginRight isnt nextProps.marginRight or
+                      @props.children.length isnt nextProps.children.length or
+                        not equal @props.children, nextProps.children
       newState =
         widthArray:
           @getFilledArray nextProps.children.length, nextProps.averageTargetWidth
@@ -81,23 +86,25 @@ module.exports = React.createClass
               style={childStyle}
               ref={itemRefName}
               onLoad={@_on_load_handler}
-              onError={@_on_error_handler.bind(this, itemRefName)}
+              onError={@_on_error_handler}
               key={i}>
           { child }
         </div>
       }
     </div>
 
-  _on_load_handler: ->
+  _on_load_handler: (event)->
+    image = event.target
+    image._loaded = true
     @fitChildren()
 
-  _on_error_handler: (itemRefName, event)->
-    element = this.refs[itemRefName].getDOMNode()
-    element.height = "100px"
-    element.height = "100px"
-    items = @getMultimediaElements element
-    items.forEach (item) ->
-      item.error = true
+  _on_error_handler: (event)->
+    # mark every failed element
+    component = event.currentTarget
+    component.width = "100px"
+    component.height = "100px"
+    image = event.target
+    image._loaded = true
     @fitChildren()
 
   fitChildren: ->
@@ -116,8 +123,18 @@ module.exports = React.createClass
   _calculate_layout: ->
     children = @props.children
     length = children.length
-    allMargins = @props.marginRight * (length - 1)
-    usableWidth = @props.containerWidth - allMargins
+    marginRight = @props.marginRight
+    containerWidth = @props.containerWidth
+    averageTargetWidth = @props.averageTargetWidth
+
+    # if number of items is to small
+    # _width = maxTargetWidth * items.length + marginRight * (items.length - 1)     # alternative     
+    _width = averageTargetWidth * children.length + marginRight * (children.length - 1)   # this one works better
+    if children.length is 1
+      containerWidth = averageTargetWidth
+    else if Math.abs(_width - containerWidth) > averageTargetWidth
+      containerWidth = _width
+
     result =
       widthArray: []
       height: 0
@@ -125,46 +142,58 @@ module.exports = React.createClass
     if length > 0
       # children components data for following calculations
       mainComponentId = 0
-      mainComponentHeight = 0
+      # mainComponentHeight = 0
       data = children.map (child, i) =>
-        element = @refs["component-#{@props.rowId}.#{i}"].getDOMNode()
-        width = parseInt element.offsetWidth
-        height = parseInt element.offsetHeight
-        hasMultimedia = true
-        if @hasNoMultimediaElements element
-          hasMultimedia = false
-          if mainComponentHeight < height
-            mainComponentId = i
-            mainComponentHeight = height
+        wrapper = @refs["component-#{@props.rowId}.#{i}"].getDOMNode()
+        child = wrapper.children[0]
+        width = parseInt wrapper.offsetWidth
+        height = parseInt child.offsetHeight
+        # hasMultimedia = true
+        # if @hasNoMultimediaElements wrapper
+        #   hasMultimedia = false
+        #   if mainComponentHeight < height
+        #     mainComponentId = i
+        #     mainComponentHeight = height
 
         # data item
         width: width
         height: height
-        hasMultimedia: hasMultimedia
+        # hasMultimedia: hasMultimedia
         get_k_i: (k) ->  # component modification ratio, this is our target in calculation process
           if mainComponentId is i
-            if hasMultimedia
-              k
-            else
-              1
+            k
+            # if hasMultimedia
+            #   k
+            # else
+            #   1
           else
             (k * data[mainComponentId].height / height)
 
       # now we know everything for calculation - let's finish it
-      # first of all find main component ratio      
-      if data[mainComponentId].hasMultimedia
-        _denominator = data.reduce ((accumulator, item) -> 
-          accumulator + (item.width * (data[mainComponentId].height)/item.height)
-        ), 0
-        K = usableWidth / _denominator
-      else
-        K = 1
+      # first of all find main component ratio
+      _denominator = data.reduce ((accumulator, item) -> 
+        accumulator + item.width * data[mainComponentId].height / item.height
+      ), 0
+      K = (containerWidth - marginRight * (length - 1) - 0.1) / _denominator  # 0.1 is for FireFox
+
+      # if data[mainComponentId].hasMultimedia
+      #   _denominator = data.reduce ((accumulator, item) -> 
+      #     accumulator + item.width * data[mainComponentId].height / item.height
+      #   ), 0
+      #   K = (containerWidth - marginRight * (length - 1) - 0.1) / _denominator  # 0.1 is for FireFox
+      # else
+      #   K = 1
+      
       # result
       result.widthArray = data.map (item, i) ->
         item.width * item.get_k_i(K)
-      result.height = data[mainComponentId].height * K
+      result.height = data[mainComponentId].height * data[mainComponentId].get_k_i(K)
+      if not marginRight  # if there is no margins we can see some inaccuracy in algorithm
+        result.height = result.height - @DELTA
 
     result
+
+  DELTA: 1  # 1px
     
   getFilledArray: (length, value) ->
     array = []
@@ -185,10 +214,12 @@ module.exports = React.createClass
     (images.filter(@isImageLoaded).length is images.length)
 
   isImageLoaded: (element) ->
-    if element.error    # marked as not loaded
-      return true
-    if not element.complete
-      return false
-    if element.naturalWidth is 0
-      return false
-    return true
+    reactid = element.getAttribute("data-reactid")
+    return (if element._loaded then true else false)
+    # if element.error    # marked as not loaded
+    #   return true
+    # if not element.complete
+    #   return false
+    # if element.naturalWidth is 0
+    #   return false
+    # return true

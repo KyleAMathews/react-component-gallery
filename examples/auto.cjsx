@@ -25,7 +25,13 @@ module.exports = React.createClass
           color: "white"
         }>Sweet label bro</span>
       </div>,
-      # <p style={margin: 0}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus neque massa, sagittis at ex a, suscipit facilisis augue. In vitae placerat est. Aliquam mollis orci id arcu condimentum gravida.
+      <img src="https://storage.googleapis.com/relaterocket-logos/nike.com-black@2x.png"/>,
+      # <p style={
+      #     margin: 0
+      #     padding: "5px"}>
+      #   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      #   Vivamus neque massa, sagittis at ex a, suscipit facilisis augue.
+      #   In vitae placerat est. Aliquam mollis orci id arcu condimentum gravida.
       # </p>,
     ]
 
@@ -108,7 +114,11 @@ module.exports = React.createClass
         onChange={@onMarginChange} />
       <code>{'  '}{@state.margin}px</code>
       <br />
-      <input type="button" onClick={@onButtonClick}/>
+      <h3>More images</h3>
+      <input
+        type="button"
+        onClick={@onButtonClick}
+        value="Click to add more"/>
       <br />
       <h3>Components</h3>
       <ComponentGallery
@@ -143,3 +153,7 @@ module.exports = React.createClass
 
   onMarginChange: (e) ->
     @setState margin: @refs.margin.getDOMNode().value
+
+  onButtonClick: ->
+    if window.moreImages
+      window.moreImages()

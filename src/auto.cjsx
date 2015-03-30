@@ -12,7 +12,7 @@ module.exports = React.createClass
     marginBottom: PropTypes.number
     maxTargetWidth: PropTypes.number.isRequired
     minTargetWidth: PropTypes.number.isRequired
-    containerWidth: PropTypes.number.isRequired
+    containerWidth: PropTypes.number
     className: PropTypes.string
     galleryClassName: PropTypes.string
     rowClassName: PropTypes.string
@@ -25,6 +25,7 @@ module.exports = React.createClass
 
   render: ->
     marginRight = @props.margin || 0
+    containerWidth = @props.containerWidth || 0
     maxTargetWidth = @props.maxTargetWidth
     minTargetWidth = @props.minTargetWidth
     averageTargetWidth = (maxTargetWidth + minTargetWidth) / 2
@@ -35,14 +36,6 @@ module.exports = React.createClass
     <div  className="component-gallery #{@props.galleryClassName || @props.className || ''}"
           style={{overflow: "hidden"}}>
       {childrenChunks.map (items, i) =>
-
-        containerWidth = @props.containerWidth || 0
-        # if number of chldren components is to small
-        # _width = maxTargetWidth * items.length + marginRight * (items.length - 1)     # alternative     
-        _width = averageTargetWidth * (items.length + 1) + marginRight * items.length   # this one works better
-        if _width < containerWidth
-          containerWidth = _width
-
         # margin bottom
         marginBottom = @props.marginBottom || @props.margin
         # Disable margin bottom on last row.
