@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "chai": "^1.10.0",
+    "chai-things": "^0.2.0",
     "cjsx-loader": "^1.1.0",
     "coffee-loader": "^0.7.2",
     "coffee-react": "^2.1.2",

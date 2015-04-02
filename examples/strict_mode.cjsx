@@ -39,7 +39,28 @@ module.exports = React.createClass
     ]
 
     <div>
-      <h2>Demo 1: Straight mode (fixed image ratio)</h2>
+      <br />
+      <h2>Demo 1: Strict mode (fixed aspect ratio)</h2>
+      <br />
+      <h3>Usage:</h3>
+      <pre><code>
+      {"""
+        <ComponentGallery
+          mode="strict"
+          className="gallery"
+          margin=10
+          noMarginBottomOnLastRow=true
+          targetWidth=250
+            <img src="https://example.com/pic1.jpg" />
+            <img src="https://example.com/pic2.jpg" />
+            <img src="https://example.com/pic3.jpg" />
+            <img src="https://example.com/pic4.jpg" />
+            <img src="https://example.com/pic5.jpg" />
+            <img src="https://example.com/pic6.jpg" />
+        </ComponentGallery>
+        """}
+      </code></pre>
+      <br />
       <h3>targetWidth</h3>
       <input
         type="range"
@@ -65,7 +86,7 @@ module.exports = React.createClass
       <h3>Components</h3>
       <ComponentGallery
           className="example"
-          mode="straight"
+          mode="strict"
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true
           targetWidth={parseInt(@state.targetWidth, 10)}

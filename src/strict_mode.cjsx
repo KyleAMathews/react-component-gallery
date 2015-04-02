@@ -1,6 +1,6 @@
 React = require 'react'
 PropTypes = React.PropTypes
-calculateLayout = require './calculate_layout'
+calculateLayout = require './strict_calculate_layout'
 
 
 module.exports = React.createClass
@@ -11,10 +11,10 @@ module.exports = React.createClass
     noMarginBottomOnLastRow: PropTypes.bool
     marginBottom: PropTypes.number
     targetWidth: PropTypes.number
-    widthHeightRatio: PropTypes.number    
-    className: PropTypes.string
+    widthHeightRatio: PropTypes.number
+    containerWidth: PropTypes.number
     galleryClassName: PropTypes.string
-    rowClassName: PropTypes.string
+    className: PropTypes.string
 
   getDefaultProps: ->
     margin: 10

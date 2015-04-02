@@ -1,9 +1,9 @@
 chai = require 'chai'
 expect = chai.expect
 
-calculateLayout = require '../src/calculate_layout'
+calculateLayout = require '../src/strict_calculate_layout'
 
-describe 'calculateLayout', ->
+describe 'strictCalculateLayout', ->
   it 'should exist', ->
     expect(calculateLayout).to.exist()
 
@@ -12,8 +12,7 @@ describe 'calculateLayout', ->
       children: [1,2,3]
       targetWidth: 100
       margin: 10
-    }, {
-      componentWidth: 500
+      containerWidth: 500      
     })
 
     expect(result).to.be.instanceOf(Array)
@@ -24,8 +23,7 @@ describe 'calculateLayout', ->
       children: [1,2,3,4,5,6,7]
       targetWidth: 100
       margin: 10
-    }, {
-      componentWidth: 500
+      containerWidth: 500
     })
 
     expect(result).to.be.instanceOf(Array)
@@ -37,8 +35,7 @@ describe 'calculateLayout', ->
       children: [1,2,3,4]
       targetWidth: 125
       margin: 80
-    }, {
-      componentWidth: 480
+      containerWidth: 480
     })
 
     expect(result).to.be.instanceOf(Array)
@@ -50,8 +47,7 @@ describe 'calculateLayout', ->
       children: [1,2,3,4]
       targetWidth: 125
       margin: 0.1
-    }, {
-      componentWidth: 480
+      containerWidth: 480
     })
 
     expect(result).to.be.instanceOf(Array)
@@ -63,8 +59,7 @@ describe 'calculateLayout', ->
       children: [1,2,3,4]
       targetWidth: 125
       margin: 0
-    }, {
-      componentWidth: 480
+      containerWidth: 480
     })
 
     expect(result).to.be.instanceOf(Array)

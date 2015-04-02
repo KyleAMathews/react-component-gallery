@@ -1,6 +1,7 @@
 React = require 'react'
 PropTypes = React.PropTypes
 equal = require 'deep-equal'
+calculate_layout = require './auto_calculate_layout'
 
 
 module.exports = React.createClass
@@ -54,9 +55,11 @@ module.exports = React.createClass
     {widthArray, height, visibility} = @state
     children = @props.children
 
+    # row component
     <div  className="component-row #{@props.rowClassName || ''}"
           style={{
             marginBottom: "#{@props.marginBottom || 0}px"
+            overflow: "hidden"
             visibility: visibility
           }}>
 
@@ -70,23 +73,20 @@ module.exports = React.createClass
         else
           marginRight = @props.marginRight || 0
 
-        # child styles
-        childStyle =
-          display: "inline-block"
-          width: "#{widthArray[i] || @props.averageTargetWidth}px"
-          height: if isFinite height then "#{height}px" else height
-          marginRight: "#{marginRight}px"
-          overflow: "hidden"
-          position: "relative"
-          verticalAlign: "top"
-
-        itemRefName = "component-#{@props.rowId}.#{i}"
-
+        # row item component
         <div  className={"component-wrapper"}
-              style={childStyle}
-              ref={itemRefName}
               onLoad={@_on_load_handler}
               onError={@_on_error_handler}
+              style={
+                display: "inline-block"
+                width: "#{widthArray[i] || @props.averageTargetWidth}px"
+                height: if isFinite height then "#{height}px" else height
+                marginRight: "#{marginRight}px"
+                overflow: "hidden"
+                position: "relative"
+                verticalAlign: "top"
+              }
+              ref={"component-#{@props.rowId}.#{i}"}
               key={i}>
           { child }
         </div>
@@ -108,8 +108,7 @@ module.exports = React.createClass
     @fitChildren()
 
   fitChildren: ->
-    # if row has no multimedia children - fit it right now
-    
+    # if row has no multimedia children - fit it right now    
     if (@hasNoMultimediaElements @getDOMNode()) or
           (@isAllChildrenLoaded @getDOMNode())
       newState = @_calculate_layout()
@@ -127,73 +126,23 @@ module.exports = React.createClass
     containerWidth = @props.containerWidth
     averageTargetWidth = @props.averageTargetWidth
 
-    # if number of items is to small
-    # _width = maxTargetWidth * items.length + marginRight * (items.length - 1)     # alternative     
-    _width = averageTargetWidth * children.length + marginRight * (children.length - 1)   # this one works better
-    if children.length is 1
+    # if number of children is to small
+    # _width = maxTargetWidth * length + marginRight * (length - 1)     # alternative     
+    _width = averageTargetWidth * length + marginRight * (length - 1)   # this one works better
+    if length is 1
       containerWidth = averageTargetWidth
     else if Math.abs(_width - containerWidth) > averageTargetWidth
       containerWidth = _width
 
-    result =
-      widthArray: []
-      height: 0
+    # children components data for following calculations
+    data = children.map (child, i) =>
+      wrapper = @refs["component-#{@props.rowId}.#{i}"].getDOMNode()
+      child = wrapper.children[0]
+      width: parseInt wrapper.offsetWidth
+      height: parseInt child.offsetHeight
 
-    if length > 0
-      # children components data for following calculations
-      mainComponentId = 0
-      # mainComponentHeight = 0
-      data = children.map (child, i) =>
-        wrapper = @refs["component-#{@props.rowId}.#{i}"].getDOMNode()
-        child = wrapper.children[0]
-        width = parseInt wrapper.offsetWidth
-        height = parseInt child.offsetHeight
-        # hasMultimedia = true
-        # if @hasNoMultimediaElements wrapper
-        #   hasMultimedia = false
-        #   if mainComponentHeight < height
-        #     mainComponentId = i
-        #     mainComponentHeight = height
-
-        # data item
-        width: width
-        height: height
-        # hasMultimedia: hasMultimedia
-        get_k_i: (k) ->  # component modification ratio, this is our target in calculation process
-          if mainComponentId is i
-            k
-            # if hasMultimedia
-            #   k
-            # else
-            #   1
-          else
-            (k * data[mainComponentId].height / height)
-
-      # now we know everything for calculation - let's finish it
-      # first of all find main component ratio
-      _denominator = data.reduce ((accumulator, item) -> 
-        accumulator + item.width * data[mainComponentId].height / item.height
-      ), 0
-      K = (containerWidth - marginRight * (length - 1) - 0.1) / _denominator  # 0.1 is for FireFox
-
-      # if data[mainComponentId].hasMultimedia
-      #   _denominator = data.reduce ((accumulator, item) -> 
-      #     accumulator + item.width * data[mainComponentId].height / item.height
-      #   ), 0
-      #   K = (containerWidth - marginRight * (length - 1) - 0.1) / _denominator  # 0.1 is for FireFox
-      # else
-      #   K = 1
-      
-      # result
-      result.widthArray = data.map (item, i) ->
-        item.width * item.get_k_i(K)
-      result.height = data[mainComponentId].height * data[mainComponentId].get_k_i(K)
-      if not marginRight  # if there is no margins we can see some inaccuracy in algorithm
-        result.height = result.height - @DELTA
-
-    result
-
-  DELTA: 1  # 1px
+    # calculate result
+    calculate_layout data, containerWidth, marginRight
     
   getFilledArray: (length, value) ->
     array = []
@@ -216,10 +165,3 @@ module.exports = React.createClass
   isImageLoaded: (element) ->
     reactid = element.getAttribute("data-reactid")
     return (if element._loaded then true else false)
-    # if element.error    # marked as not loaded
-    #   return true
-    # if not element.complete
-    #   return false
-    # if element.naturalWidth is 0
-    #   return false
-    # return true

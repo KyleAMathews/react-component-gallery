@@ -83,7 +83,30 @@ module.exports = React.createClass
     children = @state.children
 
     <div>
+      <br />
       <h2>Demo 2: Auto mode (auto fitting)</h2>
+      <br />
+      <h3>Usage:</h3>
+      <pre><code>
+      {"""
+        <ComponentGallery
+          mode="auto"
+          galleryClassName="gallery"
+          rowClassName="row"
+          margin=10
+          noMarginBottomOnLastRow=true
+          minTargetWidth=50
+          maxTargetWidth=250
+            <img src="https://example.com/pic1.jpg" />
+            <img src="https://example.com/pic2.jpg" />
+            <img src="https://example.com/pic3.jpg" />
+            <img src="https://example.com/pic4.jpg" />
+            <img src="https://example.com/pic5.jpg" />
+            <img src="https://example.com/pic6.jpg" />
+        </ComponentGallery>
+        """}
+      </code></pre>
+      <br />
       <h3>minTargetWidth</h3>
       <input
         type="range"
@@ -120,10 +143,12 @@ module.exports = React.createClass
         onClick={@onButtonClick}
         value="Click to add more"/>
       <br />
+      <br />
       <h3>Components</h3>
       <ComponentGallery
           mode="auto"
-          className="example"
+          galleryClassName={"auto-gallery"}
+          rowClassName={"auto-gallery-row"}
           margin={parseInt(@state.margin, 10)}
           noMarginBottomOnLastRow=true
           minTargetWidth={parseInt(@state.minTargetWidth, 10)}

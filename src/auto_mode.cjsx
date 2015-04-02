@@ -1,6 +1,6 @@
 React = require 'react'
 PropTypes = React.PropTypes
-GalleryRow = require './row'
+GalleryRow = require './auto_row'
 
 
 module.exports = React.createClass

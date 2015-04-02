@@ -1,8 +1,12 @@
 React = require 'react'
 PropTypes = React.PropTypes
 componentWidthMixin = require 'react-component-width-mixin'
-StraightGallery = require './straight'
-AutoGallery = require './auto'
+StrictGallery = require './strict_mode'
+AutoGallery = require './auto_mode'
+
+isServer = not process.browser
+STRICT_MODE = "strict"
+AUTO_MODE = "auto"
 
 
 module.exports = React.createClass
@@ -15,7 +19,7 @@ module.exports = React.createClass
     disableServerRender: PropTypes.bool
     
   getDefaultProps: ->
-    mode: "sraight"
+    mode: "strict"
     disableServerRender: false
     
   render: ->
@@ -23,14 +27,15 @@ module.exports = React.createClass
     if @state.componentWidth is 0
       <div />
     # If we're server rendering and the user has disabled server rendering.
-    else if not @isMounted() and @props.disableServerRender
+    else if isServer and
+              (@props.disableServerRender or @props.mode is AUTO_MODE)
       <div />
     else
-      # straight mode
-      if @props.mode is "straight"
-        <StraightGallery containerWidth={@state.componentWidth} {...@props} />
+      # strict mode
+      if @props.mode is STRICT_MODE
+        <StrictGallery containerWidth={@state.componentWidth} {...@props} />
       # auto mode
-      else if @props.mode is "auto"
+      else if @props.mode is AUTO_MODE
         <AutoGallery containerWidth={@state.componentWidth} {...@props} />
       else
         <div />
