@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "isarray": "0.0.1",
+    "object-assign": "^2.0.0",
     "react-component-width-mixin": "^1.1.7"
   },
   "devDependencies": {
