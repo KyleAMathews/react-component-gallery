@@ -1,6 +1,7 @@
 React = require 'react'
 PropTypes = React.PropTypes
 componentWidthMixin = require 'react-component-width-mixin'
+assign = require 'object-assign'
 
 calculateLayout = require './calculate_layout'
 
@@ -16,6 +17,8 @@ module.exports = React.createClass
     marginBottom: PropTypes.number
     targetWidth: PropTypes.number
     widthHeightRatio: PropTypes.number
+    galleryStyle: PropTypes.object
+    componentStyle: PropTypes.object
 
   getDefaultProps: ->
     margin: 10
@@ -23,6 +26,8 @@ module.exports = React.createClass
     targetWidth: 200
     widthHeightRatio: 1
     disableServerRender: false
+    galleryStyle: {}
+    componentStyle: {}
 
   render: ->
     # If we don't know the component width, there's nothing we can do.
@@ -34,7 +39,14 @@ module.exports = React.createClass
     else
       [componentWidth, componentsPerRow] = calculateLayout(@props, @state)
       return (
-        <div className="component-gallery #{@props.className}" style={{overflow: "hidden"}}>
+        <div
+          className="component-gallery #{@props.className}"
+          style={assign(
+            {},
+            {overflow: "hidden"},
+            @props.galleryStyle
+          )}
+        >
           {React.Children.map(@props.children, (child, i) =>
             marginBottom = @props.margin
 
@@ -59,16 +71,20 @@ module.exports = React.createClass
             return (
               React.DOM.div({
                 className: "component-wrapper"
-                style: {
-                  width: "#{componentWidth}px"
-                  height: "#{componentWidth*@props.widthHeightRatio}px"
-                  display: "inline-block"
-                  marginRight: "#{marginRight}px"
-                  marginBottom: "#{marginBottom}px"
-                  overflow: "hidden"
-                  position: "relative"
-                  "verticalAlign": "top"
-                }
+                style: assign(
+                  {},
+                  {
+                    width: "#{componentWidth}px"
+                    height: "#{componentWidth*@props.widthHeightRatio}px"
+                    display: "inline-block"
+                    marginRight: "#{marginRight}px"
+                    marginBottom: "#{marginBottom}px"
+                    overflow: "hidden"
+                    position: "relative"
+                    verticalAlign: "top"
+                  },
+                  @props.componentStyle
+                )
               }, child)
             )
           )}

@@ -1,11 +1,12 @@
 chai = require 'chai'
+should = chai.should()
 expect = chai.expect
 
 calculateLayout = require '../src/calculate_layout'
 
 describe 'calculateLayout', ->
   it 'should exist', ->
-    expect(calculateLayout).to.exist()
+    should.exist(calculateLayout)
 
   it 'should return an array with two numbers', ->
     result = calculateLayout({

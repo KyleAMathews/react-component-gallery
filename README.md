@@ -50,3 +50,5 @@ Prop                       |    Description
 `marginBottom`             | Set marginBottom (in pixels) separate from marginRight
 `targetWidth`              | Desired width for each component. Used when calculating the gallery layout.
 `widthHeightRatio`         | Defaults to 1 but useful if components don't fit well in a square.
+`galleryStyle`             | Override/set inline styles for the gallery div.
+`componentStyle`           | Override/set inline styles for each component div.

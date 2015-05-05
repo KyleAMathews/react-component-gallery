@@ -1,37 +1,39 @@
 {
   "name": "react-component-gallery",
   "description": "React component for laying out an evenly spaced gallery of child components",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "bugs": {
     "url": "https://github.com/KyleAMathews/react-component-gallery/issues"
   },
   "dependencies": {
     "isarray": "0.0.1",
+    "object-assign": "^2.0.0",
     "react-component-width-mixin": "^1.1.7"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "cjsx-loader": "^1.1.0",
+    "chai": "^2.3.0",
+    "cjsx-loader": "^2.0.1",
     "coffee-loader": "^0.7.2",
-    "coffee-react": "^2.1.2",
-    "coffee-script": "^1.8.0",
-    "css-loader": "^0.9.1",
-    "gulp": "^3.8.10",
-    "mocha": "^2.1.0",
+    "coffee-react": "^3.1.0",
+    "coffee-script": "^1.9.2",
+    "css-loader": "^0.12.0",
+    "gulp": "^3.8.11",
+    "mocha": "^2.2.4",
     "mocha-unfunk-reporter": "^0.4.0",
-    "react-hot-loader": "^1.1.1",
-    "react-responsive-grid": "0.0.4",
-    "style-loader": "^0.8.2",
-    "underscore": "^1.7.0",
-    "webpack": "^1.4.15",
-    "webpack-dev-server": "^1.7.0"
+    "pre-commit": "^1.0.7",
+    "react-hot-loader": "^1.2.6",
+    "react-responsive-grid": "^0.1.2",
+    "style-loader": "^0.12.1",
+    "underscore": "^1.8.3",
+    "webpack": "^1.8.11",
+    "webpack-dev-server": "^1.8.2"
   },
   "homepage": "https://github.com/KyleAMathews/react-component-gallery",
   "keywords": [
+    "grid",
     "react",
-    "react-component",
-    "grid"
+    "react-component"
   ],
   "license": "MIT",
   "main": "dist/index.js",
@@ -43,7 +45,8 @@
     "url": "https://github.com/KyleAMathews/react-component-gallery.git"
   },
   "scripts": {
-    "test": "NODE_ENV=test node_modules/.bin/mocha -w --recursive --compilers coffee:coffee-script/register -R mocha-unfunk-reporter",
+    "test": "NODE_ENV=test node_modules/.bin/mocha --recursive --compilers coffee:coffee-script/register -R mocha-unfunk-reporter",
+    "test-watch": "NODE_ENV=test node_modules/.bin/mocha -w --recursive --compilers coffee:coffee-script/register -R mocha-unfunk-reporter",
     "watch": "./node_modules/.bin/webpack-dev-server --hot"
   }
 }
