@@ -34,7 +34,7 @@ module.exports = React.createClass
     if @state.componentWidth is 0
       <div />
     # If we're server rendering and the user has disabled server rendering.
-    else if not @isMounted() and @props.disableServerRender
+    else if @props.disableServerRender
       <div />
     else
       [componentWidth, componentsPerRow] = calculateLayout(@props, @state)
